@@ -1,0 +1,21 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+
+    <div class="container">
+    <h4>Batch</h4>
+    <p> batch matrix needed </p>
+    <p> batch datatable could be okay</p>
+
+    {%  for item in batch.aliquots %}
+        <p>{{ item.position }}</p>
+    {% endfor %}
+
+
+
+
+    </div>
+
+
+{% endblock %}
+
+

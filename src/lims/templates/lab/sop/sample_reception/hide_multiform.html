@@ -1,0 +1,23 @@
+{% from "macro/forms.html" import sample_form as sample, physician_form as physician, lab_form as lab, aliquot_form, subject_form as subject %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <div class="container">
+        <ul class="nav nav-pills">
+          <li><a href="#">Physician</a></li>
+          <li><a href="#2">Subject</a></li>
+          <li><a href="#3">Sample</a></li>
+        </ul>
+    </div>
+
+
+    <script>
+        $(".nav.nav-pills").on("click", function(){
+            $(".nav.nav-pills").removeClass("active");
+            $(this).addClass("active")
+        })
+
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Aliquots</h1>
+    <div>
+        <table id="aliquot-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>barcode</th>
+                    <th>status</th>
+                    <th>batch ID</th>
+                    <th>sample ID</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/aliquots');
+            url.addQuery('include', 'batches,qas,sample');
+
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 2));
+
+                var table = $('#aliquot-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns:[
+                        {
+                            data: function(aliquot){
+                                return aliquot.id
+                            }
+                        },
+                        {
+                            data: function(aliquot){
+                                return aliquot.barcode
+                            }
+                        },
+                        {
+                            data: function(aliquot){
+                                return aliquot.status
+                            }
+                        },
+                        {
+                            data: function(aliquot){
+                                if (aliquot.batches.length != 0){
+                                    return 'batched'
+                                }
+                                return 'not batched'
+                            }
+                        },
+                        {
+                            data: function(aliquot){
+                                return aliquot.sample.id
+                            }
+                        }
+
+                    ]
+
+                })
+            })
+
+
+
+
+        })
+    </script>
+{% endblock %}

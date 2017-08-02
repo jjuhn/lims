@@ -1,0 +1,67 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Samples</h1>
+    <div>
+        <table id="sample-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Label</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Date Received</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/samples');
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 2));
+
+                var table = $('#sample-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns:[
+                        {
+                            data: function(sample){
+                            {# need to make function #}
+                                var sample_id = sample.id;
+                                var url = '{{ url_for('show_samples') }}'+ '/' + sample.id;
+                                var href = '<a href="'+ url+ '">' + sample.id + '</a>';
+                                return href
+                            }
+                        },
+                        {
+                            data: function(sample){
+                                return sample.label
+                            }
+                        },
+                        {
+                            data: function(sample){
+                                return sample.type
+                            }
+                        },
+                        {
+                            data: function(sample){
+                                return sample.amount
+                            }
+                        },
+                        {
+                            data: function(sample){
+                                return sample['date-received']
+                            }
+                        }
+
+                    ]
+
+                })
+            })
+
+
+
+
+        })
+    </script>
+{% endblock %}

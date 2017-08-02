@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'lab/side_nav_bar.html' %}
+
+    <div class="col-sm-9">
+        {% block lab_content %}
+            <h1>Dashboard</h1>
+        {% endblock %}
+    </div>
+
+{#<div class="container-fluid">#}
+{#    <div class="row align-items-center">#}
+{#        <div class="col-lg-12">#}
+{#            <a href={{ url_for('sample_reception') }} class="btn btn-sq-lg btn-primary">#}
+{#                <i class="fa fa-user fa-5x"></i><br/>#}
+{#                Sample Reception#}
+{#            </a>#}
+{#            <a href={{ url_for('electrophoresis') }} class="btn btn-sq-lg btn-success">#}
+{#              <i class="fa fa-user fa-5x"></i><br/>#}
+{#                Gel Electrophoresis#}
+{#            </a>#}
+{#            <a href="{{ url_for('batch_aliquots') }}" class="btn btn-sq-lg btn-info">#}
+{#              <i class="fa fa-user fa-5x"></i><br/>#}
+{#                Batch Aliquots#}
+{#            </a>#}
+{#            <a href="{{ url_for('extraction') }}" class="btn btn-sq-lg btn-warning">#}
+{#              <i class="fa fa-user fa-5x"></i><br/>#}
+{#                TBD#}
+{#            </a>#}
+{#            <a href="#" class="btn btn-sq-lg btn-danger">#}
+{#              <i class="fa fa-user fa-5x"></i><br/>#}
+{#              sop 5#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+
+
+{#</div>#}
+{% endblock %}

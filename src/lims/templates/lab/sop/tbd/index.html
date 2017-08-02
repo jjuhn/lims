@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <form class="form-horizontal">
+            <legend>Show Matrix</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="batch">Select batch</label>
+                <div class="col-md-5">
+                    <select id="batch" name="batch" class="selectpicker">
+                        {% for batch in batches %}
+                            <option value="{{ batch.id }}">Batch ID: {{ batch.id }}, Batch Name: {{ batch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-labe" for="excel">Excel Data</label>
+                <div class="col-md-5">
+                    <textarea name="excel">
+
+                    </textarea>
+                    <input type="button" onclick="javascript:generateTable()" value="Generate Table"/>
+
+                </div>
+            </div>
+
+        </form>
+    <div id="excel_table"></div>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#batch').multiselect();
+        });
+
+        function generateTable() {
+            var data = $('textarea[name=excel]').val();
+            console.log(data);
+
+        var rows = data.split("\n");
+
+        var table = $('<table />');
+
+        for(var y in rows) {
+            var cells = rows[y].split("\t");
+            var row = $('<tr />');
+            for(var x in cells) {
+                row.append('<td>'+cells[x]+'</td>');
+            }
+            table.append(row);
+        }
+
+        // Insert into DOM
+        $('#excel_table').html(table);
+        }
+
+
+
+    </script>
+{% endblock %}

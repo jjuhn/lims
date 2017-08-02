@@ -1,0 +1,31 @@
+
+
+
+
+<html>
+  <head>
+    <title>Random</title>
+  </head>
+<body>
+  <h1>Random numbers are fun!</h1>
+  {% if step == "choose_lower" %}
+    <form action="{{ url_for('sample_reception') }}" method="post">
+    {{ sample_form.csrf_token }}
+    Pick a lower limit: <input type="text" name="lowerlim"><br>
+    <input type=hidden name="step" value="choose_upper">
+    <input type="submit" value="Next">
+    </form>
+  {% elif step == "choose_upper" %}
+    <form action="{{ url_for('sample_reception') }}" method="post">
+    {{ physician_form.csrf_token }}
+    Thanks, you picked {{low}}.<br>
+    Pick an upper limit: <input type="text" name="upperlim"><br>
+    <input type="hidden" name="lowerlim" value="{{low}}">
+    <input type="hidden" name="step" value="show_number">
+    <input type="submit" value="Generate">
+    </form>
+  {% elif step == "show_number" %}
+    Your random number is: {{number}}.<br>
+  {% endif %}
+</body>
+</html>

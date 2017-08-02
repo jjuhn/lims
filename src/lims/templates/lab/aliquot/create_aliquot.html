@@ -1,0 +1,75 @@
+{% from "macro/forms.html" import new_aliquot_form as aliquot %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <div class="container">
+        <h1>Create Aliquots</h1>
+        <form id="subject_form" class="form-horizontal" method="POST" action="{{ url_for('create_aliquot') }}" autocomplete="off">
+            {{ aliquot_form.csrf_token }}
+            <legend>Select Subject & Sample</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="subject">Select Subject</label>
+                <div class="col-md-5">
+                    <select id="subject" name="subject" class="form-control">
+                        <option selected="selected">Select a subject</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}">ID: {{ subject.id }} | Label: {{ subject.label }} |
+                                Age: {{ subject.age }} | Neurocode ID: {{ subject.neurocode }}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="sample">Select Sample</label>
+                <div class="col-md-5">
+                    <select id="sample" name="sample" class="form-control">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="aliquot">Aliquot Barcode</label>
+                <div class="col-md-5">
+                    {{ aliquot_form.barcode(placeholder="Barcode") }}
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-default" value="Submit">
+        </form>
+    </div>
+
+
+    <script>
+        $(document).ready(function(){
+            $("#subject").change(function(){
+                var selected = $(this).find(':selected');
+                var value = $(this).find(':selected').val();
+
+                var url = URI('/api/subjects');
+                url.addQuery('include','samples,samples.aliquots');
+                url.addQuery('filter[id.eq]', value);
+
+                $.getJSON(url.readable(), function(json){
+                    subject = jsonapi.parse_response(json, 2);
+                    var options = [];
+                    for (var i = 0; i <subject[0].samples.length; i++){
+                        var sample = subject[0].samples[i];
+                        options.push('<option value="', sample.id, '">', subject[0].samples[i].id, ' | ',
+                            subject[0].samples[i].label, ' | ',
+                            subject[0].samples[i].type, ' | ',
+                            subject[0].samples[i].amount,
+                            '</option>' );
+                    }
+                    var sample_select = $("#sample");
+                    sample_select.html(options.join(''));
+
+                })
+            });
+
+
+        })
+    </script>
+
+{% endblock %}

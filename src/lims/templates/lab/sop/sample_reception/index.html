@@ -1,0 +1,159 @@
+{% from "macro/collapsible_panel.html" import collapsible_panel as panel %}
+{% from "macro/forms.html" import sample_form as sample, physician_form as physician, lab_form as lab, aliquot_form %}
+{% extends "lab/index.html" %}
+{% block lab_content %}
+
+    <div class="container">
+    <h4>Sample Receipt and Accessioning</h4>
+        <form id="full" class="form-horizontal" method="POST" action="/lab/sop/sample_reception" autocomplete="off">
+            {{ sample_form.csrf_token }}
+            <legend>Sample and Subject Information</legend>
+            {{ sample(sample_form) }}
+            <legend>Physician Information</legend>
+            {{ physician(physician_form) }}
+
+            <legend>Aliquots</legend>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="aliquot_barcode">Aliquot</label>
+                <div class="input-group col-md-4">
+                    <input class="form-control input-md" id="aliquot_barcode" name="aliquot_barcode" required="" size="20" type="text" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success add-more" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    </span>
+                </div>
+            </div>
+            <div class="after-add-more">
+            </div>
+
+            <input type="submit" class="btn btn-default" value="Save" >
+        </form>
+
+        <div class="copy hide form-group">
+            <div class="added">
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="aliquot_barcode">Aliquot</label>
+                    <div class="input-group col-md-4">
+                        <input class="form-control input-md" id="aliquot_barcode" name="aliquot_barcode" required="" size="20" type="text" value="">
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger remove" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<script>
+    var counter = 1;
+
+    $(document).ready(function() {
+        $('.add-more').click(function(){
+            $('.copy').find('input').attr('name', 'aliquot' + counter);
+            var html = $('.copy').html();
+            $('.after-add-more').before(html);
+            counter++;
+
+        });
+        $('body').on('click', '.remove', function(){
+            $(this).parents('.added').remove();
+        });
+
+
+        $("form").validate({
+            rules: {
+                neurocode_id: {
+                    minlength: 3,
+                    digits: true,
+                    required: true
+                },
+                age: {
+                    digits: true,
+                    max: 123,
+                    maxlength: 3,
+                    required: true
+                },
+                gender: {
+                    required: true
+                },
+                sample_type: {
+                    required: true
+                },
+                first:{
+                    lettersonly: true
+                },
+                last:{
+                    lettersonly: true
+                },
+                msp:{
+                    maxlength: 9,
+                    digits: true
+                }
+            },
+            messages:{
+
+            }
+        });
+
+        $("#neurocode_id").autocomplete({
+            source: function(request, response){
+                $.getJSON("/api/subjects?include=gender&filter[neurocode.eq]="+request.term, {
+                    term: request.term
+                }, function(data){
+                    new_data = jsonapi.parse_response(data, 2);
+                    response($.map(new_data, function(value, key){
+                        return {
+                            label: value.neurocode ,
+                            data: value
+                        }
+                    }))
+                });
+            },
+            dataType: 'json',
+            minLength: 3,
+            select: function(event, ui){
+                $('#neurocode_id').val(ui.label);
+                $('#age').val(ui.item.data.age);
+                $('input[name=gender][value='+ui.item.data.gender.id+']').prop('checked', true);
+            }
+        });
+
+        $("#msp").autocomplete({
+            source: function(request, response){
+                $.getJSON("/api/physicians?filter[msp.eq]="+request.term, {
+                    term: request.term
+                }, function(data){
+                    new_data = jsonapi.parse_response(data, 2);
+                    response($.map(new_data, function(value, key){
+                        return {
+                            label: value.msp,
+                            data: value
+                        }
+                    }))
+                })
+            },
+            dataType: 'json',
+            minLength: 3,
+            select: function(event, ui){
+                $('#msp').val(ui.label);
+                $('#first').val(ui.item.data.first);
+                $('#last').val(ui.item.data.last);
+                $('#physician_phone_number').val(ui.item.data.phone_number);
+                $('#physician_fax').val(ui.item.data.fax);
+                $('#physician_email').val(ui.item.data.email);
+                $('#physician_institute').autocomplete({
+                    source: ui.item.data.institutions
+                });
+
+                console.log(ui.item.data.institutions);
+
+                console.log(ui.item.data)
+            }
+        })
+
+    });
+
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,59 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Batch</h1>
+
+    <div>
+        <table id="batch-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/batches');
+            url.addQuery('include', 'aliquots');
+
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 2));
+
+                var table = $('#batch-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns:[
+                        {
+                            data: function(batch){
+                                var url = '{{ url_for('show_batches') }}'+ '/' + batch.id;
+                                var href = '<a href="'+ url+ '">' + batch.id + '</a>';
+                                return href
+
+                            }
+                        },
+                        {
+                            data: function(batch){
+                                return batch.name
+                            }
+                        }
+
+{#                        {#}
+{#                            data: function(aliquot){#}
+{#                                return aliquot["sample-id"]#}
+{#                            }#}
+{#                        }#}
+
+                    ]
+
+                })
+            })
+
+
+
+
+        })
+    </script>
+
+
+{%  endblock %}

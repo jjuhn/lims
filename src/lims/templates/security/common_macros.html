@@ -1,0 +1,12 @@
+{% macro render_panel(heading, body, footer) %}
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ heading }}</div>
+        <div class="panel-body">
+            {{ body }}
+        </div>
+        <div class="panel-footer">
+            {{ footer }}
+        </div>
+    </div>
+
+{% endmacro %}

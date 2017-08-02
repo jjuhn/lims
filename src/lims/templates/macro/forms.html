@@ -1,0 +1,290 @@
+{% macro render_textfield(field) %}
+    <div class="form-group">
+        {{ field.label(class='col-md-4 control-label') }}
+        <div class="col-md-4">
+            {{ field(size=20, class='form-control input-md') }}
+            {% if field.errors %}
+                <ul class=errors>
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_queryselectfield(field) %}
+    <div class="form-group">
+        {{ field.label(class='col-md-4 control-label') }}
+        <div class="col-md-4">
+            {{ field(class="selectpicker") }}
+            {% if field.errors %}
+                <ul class=errors>
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+                </ul>
+            {% endif %}
+
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro render_radiofield(field, required) %}
+    <div class="form-group">
+        {{ field.label(class='col-md-4 control-label') }}
+        <div class="col-md-4">
+        {% if required %}
+            {{ field(size=20, required='') }}
+        {% else %}
+            {{ field(size=20) }}
+        {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro sample_form(form) %}
+{#    {{ render_textfield(form.neurocode_id) }}#}
+{#    {{ render_textfield(form.age) }}#}
+{#    {{ render_radiofield(form.gender) }}#}
+    {{ render_radiofield(form.sample_type) }}
+{% endmacro %}
+
+{% macro physician_form(form) %}
+    {{ render_textfield(form.msp) }}
+    {{ render_textfield(form.first) }}
+    {{ render_textfield(form.last) }}
+    {{ render_textfield(form.physician_address) }}
+    {{ render_textfield(form.physician_city) }}
+    {{ render_textfield(form.physician_province) }}
+    {{ render_textfield(form.physician_postal_code) }}
+
+{#    <div class="form-group">#}
+{#        <label class="col-md-4 control-label" for="physician_institute">Institute</label>#}
+{#        <div class="col-md-4">#}
+{#            <input list="" class="form-control input-md" id="physician_institute" name="physician_institute" size="20" type="text" value="">#}
+{#            <datalist id="">#}
+{#                #}
+{#            </datalist>#}
+{#        </div>#}
+{#    </div>#}
+
+
+    {{ render_textfield(form.physician_phone_number) }}
+    {{ render_textfield(form.physician_fax) }}
+    {{ render_textfield(form.physician_email) }}
+    <script>
+        $(document).ready(function(){
+            $("form").validate({
+            rules: {
+                msp:{
+                    maxlength: 9,
+                    digits: true,
+                    required: true
+                }
+
+            },
+            messages:{
+
+                }
+            });
+            $("#msp").autocomplete({
+                source: function(request, response){
+                    $.getJSON("/api/physicians?filter[msp.eq]="+request.term, {
+                        term: request.term
+                    }, function(data){
+                        new_data = jsonapi.parse_response(data, 2);
+                        response($.map(new_data, function(value, key){
+                            return {
+                                label: value.msp,
+                                data: value
+                            }
+                        }))
+                    })
+                },
+                dataType: 'json',
+                minLength: 3,
+                select: function(event, ui){
+                    $('#msp').val(ui.label);
+                    $('#first').val(ui.item.data.first);
+                    $('#last').val(ui.item.data.last);
+                    $('#physician_phone_number').val(ui.item.data.phone_number);
+                    $('#physician_fax').val(ui.item.data.fax);
+                    $('#physician_email').val(ui.item.data.email);
+                    $('#physician_institute').autocomplete({
+                        source: ui.item.data.institutions
+                    });
+
+                    console.log(ui.item.data.institutions);
+
+                    console.log(ui.item.data)
+                }
+            })
+
+
+
+
+        })
+
+    </script>
+{% endmacro %}
+
+
+{% macro subject_form(form) %}
+    {{ render_textfield(form.label) }}
+    {{ render_textfield(form.neurocode_id) }}
+    {{ render_radiofield(form.gender) }}
+    {{ render_textfield(form.age) }}
+
+    <script>
+    $(document).ready(function(){
+        $("form").validate({
+            rules: {
+                neurocode_id: {
+                    maxlength: 9,
+                    digits: true,
+                    required: true
+                },
+                age: {
+                    digits: true,
+                    required: true
+                }
+
+            },
+            messages:{
+
+                }
+            });
+        $("#neurocode_id").autocomplete({
+            source: function(request, response){
+                $.getJSON("/api/subjects?include=gender&filter[neurocode.eq]="+request.term, {
+                    term: request.term
+                }, function(data){
+                    new_data = jsonapi.parse_response(data, 2);
+                    response($.map(new_data, function(value, key){
+                        return {
+                            label: value.neurocode ,
+                            data: value
+                        }
+                    }))
+                });
+            },
+            dataType: 'json',
+            minLength: 3,
+            select: function(event, ui){
+                $('#neurocode_id').val(ui.label);
+                $('#age').val(ui.item.data.age);
+                $('input[name=gender][value='+ui.item.data.gender.id+']').prop('checked', true);
+            }
+        });
+
+    })
+
+    </script>
+{% endmacro %}
+
+
+{% macro lab_form(form) %}
+    {{ render_textfield(form.lab_name) }}
+    {{ render_textfield(form.lab_address) }}
+    {{ render_textfield(form.lab_city) }}
+    {{ render_textfield(form.lab_province) }}
+    {{ render_textfield(form.lab_postal_code) }}
+    {{ render_textfield(form.lab_phone_number) }}
+    {{ render_textfield(form.lab_fax) }}
+    {{ render_textfield(form.lab_contact_name) }}
+    {{ render_textfield(form.HGNC_gene_symbol) }}
+    {{ render_textfield(form.HGVS_protein_change) }}
+    {{ render_textfield(form.transcript_id) }}
+{% endmacro %}
+
+{% macro new_aliquot_form(form) %}
+    {{ form.subject }}
+    {{ form.sample }}
+
+{% endmacro %}
+
+{% macro aliquot_form() %}
+    <div id="aliquotDiv">
+    <div class="form-group" id="aliquot1">
+        <label class="col-md-4 control-label" for="aliquot_barcode">Aliquot Barcode 1</label>
+        <div class="col-md-4">
+            <input class="form-control input-md" id="aliquot_barcode1" name="aliquot_barcode1" required="" size="20" type="text" value="">
+        </div>
+    </div>
+    </div>
+
+    <input type='button' value='Add Aliquot' id='addButton'>
+    <input type='button' value='Remove' id='removeButton'>
+
+    <script>
+        $(document).ready(function(){
+            var counter = 2;
+            $("#addButton").click(function () {
+                if(counter>10){
+                        alert("Only 10 textboxes allow");
+                        return false;
+                }
+
+                var newDiv = $(document.createElement('div')).attr("class", "form-group").attr("id", "aliquot"+counter);
+                newDiv.after().html('<label class="col-md-4 control-label">Aliquot Barcode ' + counter + '</label>'
+                    + '<div class="col-md-4"><input class="form-control input-md" id="aliquot_barcode'+counter+'" name="aliquot_barcode'+counter+'" required="" size="20" type="text" value=""> </div>');
+
+
+                newDiv.appendTo("#aliquotDiv");
+
+                counter++;
+             });
+
+        $("#removeButton").click(function () {
+            if(counter==1){
+              alert("No more textbox to remove");
+              return false;
+            }
+
+        counter--;
+
+        $("#aliquot" + counter).remove();
+
+        });
+
+        $("#getButtonValue").click(function () {
+
+        var msg = '';
+        for(i=1; i<counter; i++){
+          msg += "\n Textbox #" + i + " : " + $('#textbox' + i).val();
+        }
+              alert(msg);
+         });
+      });
+    </script>
+{% endmacro %}
+
+
+{% macro electrophoresis_form(form) %}
+{#    <div class="form-group">#}
+{#        <label class="col-md-4 control-label" for="aliquot">Select Aliquot</label>#}
+{#        <div class="col-md-4">#}
+{#            <select id="aliquot" name="aliquot" class="selectpicker">#}
+{#            {% for aliquot in results %}#}
+{#                <option value="{{ aliquot.id }}">{{ aliquot.barcode }}, {{ aliquot.type }}, {{ aliquot.neurocode_id }}</option>#}
+{#            {% endfor %}#}
+{#            </select>#}
+{#        </div>#}
+{#    </div>#}
+    {{ render_queryselectfield(form.aliquot) }}
+    {{ render_textfield(form.total_volume) }}
+    {{ render_textfield(form.DNA_conc_abs) }}
+    {{ render_textfield(form.DNA_conc_flr) }}
+    {{ render_textfield(form.DNA_qual) }}
+    {{ render_textfield(form.DNA_integrity) }}
+    {{ render_textfield(form.notes) }}
+{% endmacro %}
+
+
+
+
+

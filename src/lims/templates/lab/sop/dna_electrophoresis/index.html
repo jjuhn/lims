@@ -1,0 +1,88 @@
+{% from "macro/collapsible_panel.html" import collapsible_panel as panel %}
+{% from "macro/forms.html" import electrophoresis_form as electrophoresis %}
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <form id="full" class="form-horizontal" method="POST" action={{ url_for('electrophoresis') }}>
+
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Subject ID</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Neurocode ID</th>
+                    <th>Type</th>
+                    <th>Aliquot Barcode</th>
+                </tr>
+            </thead>
+            {% for row in results %}
+                <tr>
+                    <td></td>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.age }}</td>
+                    <td>{{ row.neurocode }}</td>
+                    <td>{{ row.type }}</td>
+                    <td>{{ row.barcode }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <table id="aliquot_table" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th></th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+            </tr>
+            </thead>
+        </table>
+
+            {{ form.csrf_token }}
+            <legend>Electrophoresis Results</legend>
+
+            {{ electrophoresis(form) }}
+{#            {{ panel("electrophoresis", "Electrophoresis Results", electrophoresis(form)) }}#}
+            <input id=submit type="submit" class="btn btn-default" value="Save">
+        </form>
+    </div>
+
+    <script>
+
+        $(document).ready(function() {
+            $("form").validate({
+                rules: {
+                    total_volume: {
+                        number: true
+                    },
+                    DNA_conc_abs: {
+                        number: true
+                    },
+                    DNA_conc_flr: {
+                        number: true
+                    },
+                    DNA_qual: {
+                        number: true
+                    }
+                },
+                messages:{
+
+                }
+            });
+
+
+            var table = $('#example').DataTable();
+
+
+        } );
+
+    </script>
+{% endblock %}
+
+

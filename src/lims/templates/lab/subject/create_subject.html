@@ -1,0 +1,24 @@
+{% from "macro/forms.html" import subject_form as subject %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>New Subjects</h1>
+    <form id="subject" class="form-horizontal" action="{{ url_for('create_subject') }}" method="post" autocomplete="off">
+        {{ subject_form.csrf_token }}
+        {{ subject(subject_form) }}
+        <input type="submit" class="btn btn-default" value="Submit">
+
+    </form>
+{#    <p>add to existing physician</p>#}
+{#    <p>add new physician (goes to physician page)</p>#}
+{#    <p> Form goes here</p>#}
+{#    <li>id generated automatically</li>#}
+{#    <li>gender</li>#}
+{#    <li>age</li>#}
+{#    <li>neurocode id that is associated with this subject</li>#}
+{#    <p>Later, I will need to make an effort to make SOP out of this as Accessioning or Receiving and maybe put subject,#}
+{#        sample, physician, aliquots in one page.</p>#}
+
+
+{% endblock %}
+

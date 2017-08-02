@@ -1,0 +1,66 @@
+{% macro render_table() %}
+<table id="physician" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>MSP</th>
+        <th>Phone number</th>
+        <th>fax</th>
+        <th>Institutes</th>
+    </tr>
+    </thead>
+</table>
+<script>
+    $(document).ready(function() {
+        $.getJSON('/physician', function (json) {
+            var table = $('#physician').DataTable({
+                data: json,
+                columns: [
+                    {
+                        data: function (physician) {
+                            return physician.id
+                        }
+                    },
+                    {
+                        data: function(physician){
+                            return physician.first +" "+ physician.last
+                        }
+                    },
+                    {
+                        data: function (physician) {
+                            return physician.msp
+
+                        }
+                    },
+                    {
+                        data: function(physician){
+                            return physician.phone_number
+                        }
+                    },
+                    {
+                        data: function(physician){
+                            return physician.fax
+                        }
+                    },
+                    {
+                        data: function(physician){
+                            l = [];
+                            for(var key in physician.institutes){
+                                l.push(physician.institutes[key].name)
+                            }
+
+                            return l;
+
+                        }
+                    }
+
+                ]
+
+            })
+
+        });
+    });
+</script>
+
+{% endmacro %}

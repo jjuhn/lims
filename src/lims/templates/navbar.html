@@ -1,0 +1,27 @@
+{% macro nav_item(href, title) -%}
+    <li {% if request.path == href  %} class="active"{% endif %}>
+        <a href="{{ href }}">{{ title }}</a>
+    </li>
+{%- endmacro %}
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Neurocode LIMS</a>
+        </div>
+        <ul class="nav navbar-nav">
+            {{ nav_item('/', 'Home') }}
+            {{ nav_item('/about', 'About') }}
+            {{ nav_item('/contact', 'Contact') }}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {%  if current_user.is_authenticated %}
+                <li><a href="{{ url_for_security('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
+            {% else %}
+                <li><a href="{{ url_for_security('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
+            {% endif %}
+            <li><a href="{{ url_for_security('register') }}"><span class="glyphicon glyphicon-registration-mark"></span> Register </a></li>
+        </ul>
+    </div>
+</nav>
+

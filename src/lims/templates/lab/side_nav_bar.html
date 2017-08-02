@@ -1,0 +1,64 @@
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href={{ url_for('lab') }}> Overview</a></li>
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Subjects</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('show_subjects') }}>See Subjects</a></li>
+                        <li><a href={{ url_for('create_subject') }}>New Subjects</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Samples</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('show_samples') }}">See Samples</a></li>
+                        <li><a href={{ url_for('sample_reception') }}>Receive Sample</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Aliquots</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('show_aliquot') }}>See Aliquots</a></li>
+                        <li><a href={{ url_for('create_aliquot') }}>Make Aliquots</a></li>
+                        <li><a href={{ url_for('batch_aliquots') }}>Batch Aliquots</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Batches</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('show_batches') }}>See Batches</a></li>
+                        <li><a href="#">Make Batch</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Plates</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('create_plate') }}>Make Plate</a></li>
+                        <li><a href="#">See Plates</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">QA</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">QA1</a></li>
+                        <li><a href="#">QA2</a></li>
+                        <li><a href="#">QA3</a></li>
+                        <li><a href="#">QA4</a></li>
+                        <li><a href="#">QA5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"> Sanger Sequencing</a></li>
+
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">SOP</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('sample_reception') }}>Sample Receipt and Accessioning</a></li>
+                        <li><a href="#">SOP 2</a></li>
+                        <li><a href="#">SOP 3</a></li>
+                        <li><a href="#">SOP 4</a></li>
+                        <li><a href="#">SOP 5</a></li>
+                    </ul>
+                </li>
+
+
+{#                <li><a href="{{ url_for('electrophoresis') }}">Samples</a></li>#}
+{#                <li><a href="{{ url_for('batch_aliquots') }}">Aliquots</a></li>#}
+{#                <li><a href="{{ url_for('extraction') }}">Sequencer</a></li>#}
+{#                <li><a href="{{ url_for('show_sample') }}">Sample</a></li>#}
+            </ul>
+        </div>

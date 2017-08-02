@@ -1,0 +1,3 @@
+[console_scripts]
+run = lims.run:main
+

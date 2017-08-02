@@ -1,0 +1,73 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Subjects</h1>
+    <div>
+        <table id="subject-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Label</th>
+                    <th>Age</th>
+                    <th>Neurocode ID</th>
+{#                    <th>Date Received</th>#}
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/subjects');
+            url.addQuery('include','samples,samples.aliquots');
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 3));
+
+                var table = $('#subject-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns:[
+                        {
+                            data: function(subject){
+                                var url = '{{ url_for('show_subjects') }}'+ '/' + subject.id;
+                                var href = '<a href="'+ url+ '">' + subject.id + '</a>';
+                                return href
+                            }
+                        },
+                        {
+                            data: function(subject){
+                                return subject.label
+                            }
+                        },
+                        {
+                            data: function(subject){
+                                return subject.age
+                            }
+                        },
+                        {
+                            data: function(subject){
+                                return subject.neurocode
+                            }
+                        },
+{#                        {#}
+{#                            data: function(subject){#}
+{#                                return subject['date-received']#}
+{#                            }#}
+{#                        }#}
+
+                    ],
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
+
+
+                })
+            })
+
+
+
+
+        })
+    </script>
+
+
+{% endblock %}
