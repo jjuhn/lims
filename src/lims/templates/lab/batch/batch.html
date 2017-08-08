@@ -7,7 +7,7 @@
     <p> batch datatable could be okay</p>
 
     {%  for item in batch.aliquots %}
-        <p>{{ item.position }}</p>
+        <p>{{ item.position }} : {{ item.aliquot.barcode }}</p>
     {% endfor %}
 
 

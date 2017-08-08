@@ -46,12 +46,19 @@
     </div>
 {% endmacro %}
 
+
 {% macro sample_form(form) %}
 {#    {{ render_textfield(form.neurocode_id) }}#}
 {#    {{ render_textfield(form.age) }}#}
 {#    {{ render_radiofield(form.gender) }}#}
     {{ render_radiofield(form.sample_type) }}
 {% endmacro %}
+
+
+{% macro batch_form(form) %}
+    {{ render_textfield(form.name) }}
+{% endmacro %}
+
 
 {% macro physician_form(form) %}
     {{ render_textfield(form.msp) }}

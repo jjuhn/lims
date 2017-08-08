@@ -1,13 +1,15 @@
 {% extends "lab/index.html" %}
 {% block lab_content %}
     <h1>Batch</h1>
-
     <div>
         <table id="batch-table" class="table" width="100%">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Storage</th>
+                    <th>Created on</th>
+                    <th>Created by</th>
                 </tr>
             </thead>
         </table>
@@ -16,7 +18,7 @@
     <script>
         $(document).ready(function(){
             var url = URI('/api/batches');
-            url.addQuery('include', 'aliquots');
+            url.addQuery('include', 'aliquots,storage');
 
             $.getJSON(url.readable(), function(json){
                 console.log(jsonapi.parse_response(json, 2));
@@ -36,13 +38,28 @@
                             data: function(batch){
                                 return batch.name
                             }
+                        },
+                        {
+                            data: function(batch){
+                                if(batch.storage){
+                                    return batch.storage.name
+                                }
+                                return 'NA'
+                            }
+                        },
+                        {
+                            data: function(batch){
+                                return batch.created
+                            }
+                        },
+                        {
+                            data: function(batch){
+                                if (batch.created_by){
+                                    return batch.created_by
+                                }
+                                return 'NA'
+                            }
                         }
-
-{#                        {#}
-{#                            data: function(aliquot){#}
-{#                                return aliquot["sample-id"]#}
-{#                            }#}
-{#                        }#}
 
                     ]
 

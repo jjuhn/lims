@@ -199,7 +199,6 @@ class Sample(db.Model):
     # institutions = db.relationship("Registration", back_populates="sample")
     # physicians = db.relationship("Registration", back_populates="sample")
 
-
     def __init__(self, type, amount, date_received, label):
         self.type = type
         self.amount = amount
@@ -210,14 +209,42 @@ class Sample(db.Model):
         return '<sample id=%s sample type=%s recieved=%s>' % (self.id, self.type, self.date_received)
 
 
+class Storage(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text)
+    created = db.Column(db.TIMESTAMP)
+    created_by = db.Column(db.Integer, db.ForeignKey(User.id))
+
+    aliquots = db.relationship("Aliquot", backref='storage')
+    batches = db.relationship("Batch", backref='storage')
+
+
+    def __init__(self, name, created):
+        self.name = name
+        self.created = created
+
+
+class Status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.Text)
+
+    aliquots = db.relationship("Aliquot", backref='status')
+
+# class Thing(db.Model):
+#     __abstract__ = True
+#     created_on = db.Column(db.DateTime, default=db.func.now())
+#     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
+
+
 class Aliquot(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     barcode = db.Column(db.Text)
-    status = db.Column(db.Text)
 
     sample_id = db.Column(db.Integer, db.ForeignKey(Sample.id))
     created = db.Column(db.TIMESTAMP)
     created_by = db.Column(db.Integer, db.ForeignKey(User.id))
+    storage_id = db.Column(db.Integer, db.ForeignKey(Storage.id))
+    status_id = db.Column(db.Integer, db.ForeignKey(Status.id))
 
     qas = db.relationship("Qa", secondary="aliquot_qa")
 
@@ -232,6 +259,9 @@ class Aliquot(db.Model):
 class Batch(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
+    storage_id = db.Column(db.Integer, db.ForeignKey(Storage.id))
+    created = db.Column(db.TIMESTAMP)
+    created_by = db.Column(db.Integer, db.ForeignKey(User.id))
 
     def __str__(self):
         return '<name=%s>' % (self.name)

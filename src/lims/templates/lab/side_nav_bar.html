@@ -1,10 +1,17 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><a href={{ url_for('lab') }}> Overview</a></li>
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Physicians</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('show_physicians') }}>See Physicians</a></li>
+                        <li><a href={{ url_for('create_physician') }}>New Physician</a></li>
+                    </ul>
+                </li>
+
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Subjects</a>
                     <ul class="dropdown-menu">
                         <li><a href={{ url_for('show_subjects') }}>See Subjects</a></li>
-                        <li><a href={{ url_for('create_subject') }}>New Subjects</a></li>
+                        <li><a href={{ url_for('create_subject') }}>New Subject</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Samples</a>
@@ -24,7 +31,7 @@
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Batches</a>
                     <ul class="dropdown-menu">
                         <li><a href={{ url_for('show_batches') }}>See Batches</a></li>
-                        <li><a href="#">Make Batch</a></li>
+                        <li><a href={{ url_for('create_batch') }}>New Batch</a></li>
                     </ul>
                 </li>
 
@@ -47,7 +54,7 @@
 
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">SOP</a>
                     <ul class="dropdown-menu">
-                        <li><a href={{ url_for('sample_reception') }}>Sample Receipt and Accessioning</a></li>
+                        <li><a href={{ url_for('sample_reception2') }}>Sample Receipt and Accessioning</a></li>
                         <li><a href="#">SOP 2</a></li>
                         <li><a href="#">SOP 3</a></li>
                         <li><a href="#">SOP 4</a></li>

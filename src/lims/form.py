@@ -34,6 +34,11 @@ class PhysicianForm(FlaskForm):
     physician_email = EmailField('Email')
 
 
+class BatchForm(FlaskForm):
+    name = StringField('Name')
+
+
+
 class SubjectForm(FlaskForm):
     neurocode_id = IntegerField('Neurocode ID')
     gender = RadioField('Gender', choices=[(1, 'Male'), (2, 'Female'), (3, 'Unknown')], coerce=int)

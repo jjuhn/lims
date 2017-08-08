@@ -1,0 +1,62 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Physician</h1>
+    <div>
+        <table id="physician-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>MSP</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/physicians');
+{#            url.addQuery('include', 'registration')#}
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 2));
+                var table = $('#physician-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns:[
+                        {
+                            data: function(physician){
+                                return physician.id
+                            }
+                        },
+                        {
+                            data: function(physician){
+                                return physician.first + ' ' + physician.last
+                            }
+                        },
+                        {
+                            data: function(physician){
+                                return physician.msp
+                            }
+                        },
+                        {
+                            data: function(physician){
+                                return physician["phone-number"]
+                            }
+                        },
+                        {
+                            data: function(physician){
+                                return physician.email
+                            }
+                        }
+                    ]
+                })
+            })
+
+
+
+
+        })
+
+
+    </script>
+{% endblock %}

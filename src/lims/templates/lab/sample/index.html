@@ -18,6 +18,7 @@
     <script>
         $(document).ready(function(){
             var url = URI('/api/samples');
+            url.addQuery('include', 'physicians')
             $.getJSON(url.readable(), function(json){
                 console.log(jsonapi.parse_response(json, 2));
 
@@ -58,9 +59,6 @@
 
                 })
             })
-
-
-
 
         })
     </script>

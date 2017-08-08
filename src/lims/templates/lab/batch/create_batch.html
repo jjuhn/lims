@@ -1,0 +1,12 @@
+{%  from "macro/forms.html" import batch_form as batch %}
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <div class="container">
+        <form id="batch_form" class="form-horizontal" method="post" action="{{ url_for('create_batch') }}" autocomplete="off">
+            {{ batch_form.csrf_token }}
+            <legend>Create Batch</legend>
+            {{ batch(batch_form) }}
+
+        </form>
+    </div>
+{% endblock %}

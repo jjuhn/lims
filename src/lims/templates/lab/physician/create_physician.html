@@ -1,0 +1,12 @@
+{% extends "lab/index.html" %}
+{% from "macro/forms.html" import physician_form as physician %}
+
+{% block lab_content %}
+    <h1>Physician</h1>
+    <form id="full" class="form-horizontal" method="POST" action="/lab/sop/sample_reception" autocomplete="off">
+        {{ physician(physician_form) }}
+
+    <input type="submit" class="btn btn-default" value="save">
+
+    </form>
+{% endblock %}

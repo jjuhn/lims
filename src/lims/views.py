@@ -1,7 +1,7 @@
 from lims import app, db
 from flask import render_template, redirect, request, jsonify, url_for
-from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, NewAliquotForm
-from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot
+from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, NewAliquotForm, BatchForm
+from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot, Storage
 from flask import flash
 from flask_login import current_user
 
@@ -30,6 +30,10 @@ def contact():
     return render_template('contact.html')
 
 
+@app.route('/api/physicians')
+def get_physicians():
+    response = jsonapi.get_collection(db.session, request.args, 'physicians')
+    return jsonify(response.document), response.status
 
 
 @app.route('/api/users')
@@ -41,12 +45,6 @@ def get_users():
 @app.route('/api/subjects')
 def get_subjects():
     response = jsonapi.get_collection(db.session, request.args, 'subjects')
-    return jsonify(response.document), response.status
-
-
-@app.route('/api/physicians')
-def get_physicians():
-    response = jsonapi.get_collection(db.session, request.args, 'physicians')
     return jsonify(response.document), response.status
 
 
@@ -179,6 +177,18 @@ def lab():
 #     return jsonify(result.data)
 
 
+@app.route('/lab/physician', methods=['GET'])
+def show_physicians():
+    return render_template("lab/physician/index.html")
+
+
+@app.route('/lab/physician/create', methods=['GET', 'POST'])
+def create_physician():
+    physician_form = PhysicianForm()
+    return render_template("lab/physician/create_physician.html", physician_form=physician_form)
+
+
+
 @app.route('/lab/subject', methods=['GET'])
 def show_subjects():
     return render_template("lab/subject/index.html")
@@ -235,29 +245,32 @@ def show_aliquot():
 def create_aliquot():
     aliquot_form = NewAliquotForm()
     subjects = Subject.query.filter(Subject.samples != None).all()
+    storage = Storage.query.all()
 
     if aliquot_form.validate_on_submit():
         print request.form
         sample = request.form.get('sample')
         subject = request.form.get('subject')
         barcode = request.form.get('barcode')
-
+        store = request.form.get('storage')
+        storage_db = Storage.query.get(store)
         s = Sample.query.get(sample)
 
         if s:
             a = Aliquot(barcode=barcode, created=datetime.now())
             a.user = current_user
+            a.storage = storage_db if storage_db else None
+
             db.session.add(a)
             a.sample = s
             # s.append(a)
             db.session.commit()
-            return redirect(url_for(''))
+            return redirect(url_for('show_aliquot'))
 
         else:
             flash('Please provide Barcode ', 'danger')
 
-
-    return render_template("lab/aliquot/create_aliquot.html", aliquot_form=aliquot_form, subjects=subjects)
+    return render_template("lab/aliquot/create_aliquot.html", aliquot_form=aliquot_form, subjects=subjects, storage=storage)
 
 
 
@@ -277,11 +290,22 @@ def show_sample(sample_id):
 def show_batches():
     return render_template("lab/batch/index.html")
 
+
 @app.route('/lab/batch/<int:batch_id>', methods=['GET'])
 def show_batch(batch_id):
     batch = Batch.query.get(batch_id)
     if batch:
          return render_template("lab/batch/batch.html", batch=batch)
+
+
+@app.route('/lab/batch/create', methods=['GET', 'POST'])
+def create_batch():
+    batch_form = BatchForm()
+
+    return render_template("lab/batch/create_batch.html", batch_form=batch_form)
+
+
+
 
 # @app.route('/lab/sop/sample_reception', methods=['GET', 'POST'])
 # def sample_reception():
@@ -336,6 +360,21 @@ def sample_reception():
 
         return render_template("lab/sop/sample_reception/multipage.html", step="finish")
 
+@app.route('/lab/sop/sample_reception2', methods=['GET', 'POST'])
+def sample_reception2():
+
+
+    return render_template("lab/sop/sample_reception/index2.html")
+
+@app.route('/lab/sop/sample_reception2/step1')
+def step1():
+    physicians = Physician.query.all()
+    return render_template("lab/sop/sample_reception/physician.html", physicians=physicians)
+
+
+@app.route('/lab/sop/sample_reception2/step2')
+def step2():
+    return render_template("lab/sop/sample_reception/step2.html")
 
 
 # def sample_reception():
