@@ -387,6 +387,11 @@ class Equipment(db.Model):
 
     manufacturer_id = db.Column(db.Integer, db.ForeignKey(Manufacturer.id))
 
+    def __init__(self, name, catalog_identifier):
+        self.name = name
+        self.catalog_identifier = catalog_identifier
+
+
 
 # class AliquotSchema(ma.ModelSchema):
 #     sample = fields.Nested('SampleSchema')

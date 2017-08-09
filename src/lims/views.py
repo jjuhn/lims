@@ -196,6 +196,16 @@ def show_equipments():
 def create_equipment():
     equip_form = EquipForm()
 
+    if equip_form.validate_on_submit():
+        e = Equipment(equip_form.name.data, equip_form.catalog_identifier.data)
+        db.session.add(e)
+        e.manufacturer = equip_form.manufacturer.data
+        db.session.commit()
+        flash("New Equipment Added: {0}".format(e.name))
+
+        return redirect(url_for('show_equipments'))
+
+
     return render_template('lab/equipment/create_equipment.html', equip_form=equip_form)
 
 

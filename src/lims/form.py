@@ -77,7 +77,7 @@ class ElectrophoresisForm(FlaskForm):
 class EquipForm(FlaskForm):
     name = StringField('Name')
     catalog_identifier = StringField('Catalog Number')
-    manufacturer = QuerySelectField(query_factory=lambda: Manufacturer.query.all())
+    manufacturer = QuerySelectField(query_factory=lambda: Manufacturer.query.all(), get_label='name')
 
 
 

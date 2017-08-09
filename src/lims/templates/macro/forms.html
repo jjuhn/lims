@@ -27,7 +27,6 @@
             {% endfor %}
                 </ul>
             {% endif %}
-
         </div>
     </div>
 {% endmacro %}
@@ -58,6 +57,16 @@
 {% macro batch_form(form) %}
     {{ render_textfield(form.name) }}
 {% endmacro %}
+
+
+{% macro equipment_form(form) %}
+    {{ render_textfield(form.name) }}
+    {{ render_textfield(form.catalog_identifier) }}
+    {{ render_queryselectfield(form.manufacturer) }}
+{% endmacro %}
+
+
+
 
 
 {% macro physician_form(form) %}
