@@ -1,0 +1,66 @@
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Equipments</h1>
+    <p>just a list of equipments that we have in the database</p>
+
+    <div>
+        <table id="equipment-table" class="table" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Catalog Identifier</th>
+                    <th>Manufacturer</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            var url = URI('/api/equipments');
+            url.addQuery('include', 'manufacturer');
+
+            $.getJSON(url.readable(), function(json){
+                console.log(jsonapi.parse_response(json, 2));
+
+                var table = $('#equipment-table').DataTable({
+                    data: jsonapi.parse_response(json, 2),
+                    columns: [
+                        {
+                            data: function(e){
+                                return e.id
+                            }
+                        },
+                        {
+                            data: function(e){
+                                return e.name
+                            }
+                        },
+                        {
+                            data: function(e){
+                                return e['catalog-identifier']
+                            }
+                        },
+                        {
+                            data: function(e){
+                                return e.manufacturer.name
+                            }
+                        }
+
+
+                    ]
+                })
+
+
+
+            })
+        })
+
+
+
+
+
+    </script>
+{% endblock %}
+

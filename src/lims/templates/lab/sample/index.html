@@ -27,7 +27,7 @@
                     columns:[
                         {
                             data: function(sample){
-                            {# need to make function #}
+{#                             need to make function#}
                                 var sample_id = sample.id;
                                 var url = '{{ url_for('show_samples') }}'+ '/' + sample.id;
                                 var href = '<a href="'+ url+ '">' + sample.id + '</a>';
@@ -62,4 +62,5 @@
 
         })
     </script>
+
 {% endblock %}

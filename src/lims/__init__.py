@@ -59,7 +59,8 @@ from lims.security.forms import LIMSConfirmRegisterForm
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore, register_form=LIMSConfirmRegisterForm)
+
+security = Security(app, user_datastore, confirm_register_form=LIMSConfirmRegisterForm)
 
 
 from flask_admin import Admin

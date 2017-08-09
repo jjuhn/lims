@@ -59,7 +59,14 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
     aliquots = db.relationship('Aliquot', backref='user')
+    batches = db.relationship('Batch', backref='user')
 
     def __str__(self):
         return '<User id=%s email=%s>' % (self.id, self.email)
+
+
+# class Physician(User):
+#     __mapper_args__ = {'polymorphic_identity': 'physician'}
+#
+#     msp = db.Column(db.Integer, unique=True)
 

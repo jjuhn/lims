@@ -1,0 +1,23 @@
+{% from "macro/forms.html" import sample_form as sample, physician_form as physician, lab_form as lab, aliquot_form, subject_form as subject %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <div class="container">
+        <p>Here I need to put the progress bar</p>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="subject">Select Physician</label>
+            <div class="col-md-5">
+                <select id="physician" name="physician" class="form-control">
+                    <option value="0" selected="selected">Select Physician</option>
+                    {% for physician in physicians %}
+                        <option value="{{ physician.id }}">MSP: {{ physician.msp }} | Name: {{ physician.first }} {{ physician.last }} </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-default" value="Submit">
+
+    </div>
+
+{% endblock %}

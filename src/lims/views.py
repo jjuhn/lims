@@ -1,7 +1,7 @@
 from lims import app, db
 from flask import render_template, redirect, request, jsonify, url_for
-from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, NewAliquotForm, BatchForm
-from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot, Storage
+from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, NewAliquotForm, BatchForm, EquipForm
+from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot, Storage, Equipment, Manufacturer
 from flask import flash
 from flask_login import current_user
 
@@ -64,6 +64,16 @@ def get_samples():
 def get_batches():
     response = jsonapi.get_collection(db.session, request.args, 'batches')
     return jsonify(response.document), response.status
+
+
+
+@app.route('/api/equipments')
+def get_equipments():
+    response = jsonapi.get_collection(db.session, request.args, 'equipment')
+    return jsonify(response.document), response.status
+
+
+
 
 
 #
@@ -175,6 +185,19 @@ def lab():
 # def get_sample():
 #     result = samples_schema.dump(Sample.query.all())
 #     return jsonify(result.data)
+
+
+@app.route('/lab/equipment', methods=['GET'])
+def show_equipments():
+    return render_template("lab/equipment/index.html")
+
+
+@app.route('/lab/equipment/create', methods=['GET', 'POST'])
+def create_equipment():
+    equip_form = EquipForm()
+
+    return render_template('lab/equipment/create_equipment.html', equip_form=equip_form)
+
 
 
 @app.route('/lab/physician', methods=['GET'])

@@ -1,0 +1,19 @@
+{% from "macro/forms.html" import equip_form as equip %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+
+    <div class="container">
+        <h1>Create Equipments</h1>
+        <form id="equip_form" class="form-horizontal" method="POST" action="{{ url_for('create_equipment') }}" autocomplete="off">
+            {{ equip_form.csrf_token }}
+            <div class="form-group">
+                <label class="col-md-2 control-label" for=""> </label>
+                <div class="col-md-5">
+                    {{ equip_form}}
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

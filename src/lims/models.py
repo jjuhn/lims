@@ -371,6 +371,23 @@ class Collaborator(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 
+class Manufacturer(db.Model):
+    __tablename__ = 'manufacturer'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text)
+
+    equipments = db.relationship('Equipment', backref='manufacturer')
+
+
+class Equipment(db.Model):
+    __tablename__ = 'equipment'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text)
+    catalog_identifier = db.Column(db.Text)
+
+    manufacturer_id = db.Column(db.Integer, db.ForeignKey(Manufacturer.id))
+
+
 # class AliquotSchema(ma.ModelSchema):
 #     sample = fields.Nested('SampleSchema')
 #

@@ -35,6 +35,15 @@
                     </ul>
                 </li>
 
+                <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipments</a>
+                    <ul class="dropdown-menu">
+                        <li><a href={{ url_for('show_equipments') }}>See Equipments </a></li>
+                        <li><a href={{ url_for('create_equipment') }}>New Equipment </a></li>
+{#                        <li><a href={{ url_for('order_equipment') }}>Order Equipments </a></li>#}
+                    </ul>
+                </li>
+
+
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Plates</a>
                     <ul class="dropdown-menu">
                         <li><a href={{ url_for('create_plate') }}>Make Plate</a></li>

@@ -4,7 +4,7 @@ from wtforms.fields.html5 import EmailField, TelField
 from wtforms.validators import DataRequired, ValidationError
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
-from models import Aliquot
+from models import Aliquot, Manufacturer
 
 class SampleReceptionForm(FlaskForm):
     # neurocode_id = IntegerField('Neurocode ID', validators=[DataRequired() ])
@@ -74,6 +74,10 @@ class ElectrophoresisForm(FlaskForm):
     notes = TextAreaField('Notes')
 
 
+class EquipForm(FlaskForm):
+    name = StringField('Name')
+    catalog_identifier = StringField('Catalog Number')
+    manufacturer = QuerySelectField(query_factory=lambda: Manufacturer.query.all())
 
 
 
