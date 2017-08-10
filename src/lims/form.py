@@ -1,10 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, RadioField, StringField, FieldList, FormField, DecimalField, TextAreaField, FileField, SelectField
+from wtforms import IntegerField, RadioField, StringField, FieldList, FormField, DecimalField, TextAreaField, FileField, \
+    SelectField, DateField
 from wtforms.fields.html5 import EmailField, TelField
 from wtforms.validators import DataRequired, ValidationError
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
-from models import Aliquot, Manufacturer
+from models import Aliquot, Manufacturer, Gender
+
 
 class SampleReceptionForm(FlaskForm):
     # neurocode_id = IntegerField('Neurocode ID', validators=[DataRequired() ])
@@ -80,6 +82,13 @@ class EquipForm(FlaskForm):
     manufacturer = QuerySelectField(query_factory=lambda: Manufacturer.query.all(), get_label='name')
 
 
+class PatientLabelForm(FlaskForm):
+    neurocode_id = StringField('Neurocode ID')
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    date_of_birth = DateField('Date of Birth', format='%Y-%m-%d')
+    gender = QuerySelectField(query_factory=lambda: Gender.query.all(), get_label='name')
+    patient_health_number = IntegerField('Patient Health Number')
 
 
 

@@ -1,6 +1,8 @@
 from lims import app, db
 from flask import render_template, redirect, request, jsonify, url_for
-from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, NewAliquotForm, BatchForm, EquipForm
+from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, \
+    NewAliquotForm, BatchForm, EquipForm, PatientLabelForm
+
 from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot, Storage, Equipment, Manufacturer
 from flask import flash
 from flask_login import current_user
@@ -261,6 +263,23 @@ def create_subject():
     return render_template("lab/subject/create_subject.html", subject_form=subject_form)
 
 
+@app.route('/lab/patient_label/', methods=['GET', 'POST'])
+def create_patient_label():
+    label_form = PatientLabelForm()
+    if label_form.validate_on_submit():
+        print label_form.neurocode_id.data
+        print label_form.first_name.data
+        print label_form.last_name.data
+        print label_form.date_of_birth.data
+        print label_form.gender.data
+        print label_form.patient_health_number.data
+
+        return
+
+
+    return render_template('lab/subject/patient_label.html', label_form=label_form)
+
+
 @app.route('/lab/plate/create', methods=['GET', 'POST'])
 def create_plate():
     return render_template("lab/plate/create_plate.html")
@@ -405,6 +424,7 @@ def step1():
 @app.route('/lab/sop/sample_reception2/step2')
 def step2():
     return render_template("lab/sop/sample_reception/step2.html")
+
 
 
 # def sample_reception():

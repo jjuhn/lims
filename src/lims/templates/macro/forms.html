@@ -67,8 +67,6 @@
 
 
 
-
-
 {% macro physician_form(form) %}
     {{ render_textfield(form.msp) }}
     {{ render_textfield(form.first) }}
@@ -301,6 +299,13 @@
 {% endmacro %}
 
 
+{%  macro patient_label_form(form) %}
+    {{ render_textfield(form.neurocode_id) }}
+    {{ render_textfield(form.first_name) }}
+    {{ render_textfield(form.last_name) }}
+    {{ render_textfield(form.date_of_birth) }}
+    {{ render_queryselectfield(form.gender) }}
+    {{ render_textfield(form.patient_health_number) }}
 
-
+{% endmacro %}
 

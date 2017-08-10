@@ -1,0 +1,13 @@
+{% from "macro/forms.html" import patient_label_form as patient_label %}
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <h1>Patient Label Template</h1>
+    <form id="patient_label" class="form-horizontal" action="{{ url_for('create_patient_label') }}" method="post"
+          autocomplete="off">
+        {{ label_form.csrf_token }}
+        {{ patient_label(label_form) }}
+        <input type="submit" class="btn btn-default" value="Submit">
+
+    </form>
+
+{% endblock %}
