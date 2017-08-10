@@ -1,7 +1,7 @@
 from lims import app, db
 from flask import render_template, redirect, request, jsonify, url_for
 from lims.form import SampleReceptionForm, PhysicianForm, LaboratoryForm, ElectrophoresisForm, SubjectForm, \
-    NewAliquotForm, BatchForm, EquipForm, PatientLabelForm
+    NewAliquotForm, BatchForm, EquipForm, PatientLabelForm, SampleAccessioningLogForm
 
 from lims.models import Subject, Sample, Aliquot, Gender, Physician, Institute, Qa, AliquotQa, Batch, BatchAliquot, Storage, Equipment, Manufacturer
 from flask import flash
@@ -409,11 +409,12 @@ def sample_reception():
 
         return render_template("lab/sop/sample_reception/multipage.html", step="finish")
 
+
+
 @app.route('/lab/sop/sample_reception2', methods=['GET', 'POST'])
 def sample_reception2():
-
-
     return render_template("lab/sop/sample_reception/index2.html")
+
 
 @app.route('/lab/sop/sample_reception2/step1')
 def step1():
@@ -424,6 +425,24 @@ def step1():
 @app.route('/lab/sop/sample_reception2/step2')
 def step2():
     return render_template("lab/sop/sample_reception/step2.html")
+
+
+@app.route('/lab/sop/create_sop')
+def create_sop():
+    return render_template("lab/sop/create.html")
+
+
+
+
+@app.route('/lab/sample/accessioning', methods=['GET', 'POST'])
+def sample_accessioning_log():
+    sal_form = SampleAccessioningLogForm()
+
+    return render_template("lab/sample/log.html", sal_form=sal_form)
+
+
+
+
 
 
 

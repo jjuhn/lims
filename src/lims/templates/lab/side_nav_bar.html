@@ -19,6 +19,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="{{ url_for('show_samples') }}">See Samples</a></li>
                         <li><a href={{ url_for('sample_reception') }}>Receive Sample</a></li>
+                        <li><a href={{ url_for('sample_accessioning_log') }}>Sample Accessioning Log</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Aliquots</a>
@@ -65,6 +66,7 @@
                 <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">SOP</a>
                     <ul class="dropdown-menu">
                         <li><a href={{ url_for('sample_reception2') }}>Sample Receipt and Accessioning</a></li>
+                        <li><a href={{ url_for('create_sop') }}>Create SOP</a></li>
                         <li><a href="#">SOP 2</a></li>
                         <li><a href="#">SOP 3</a></li>
                         <li><a href="#">SOP 4</a></li>

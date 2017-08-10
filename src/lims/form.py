@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, RadioField, StringField, FieldList, FormField, DecimalField, TextAreaField, FileField, \
-    SelectField, DateField
+    SelectField, DateField, BooleanField
 from wtforms.fields.html5 import EmailField, TelField
 from wtforms.validators import DataRequired, ValidationError
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
@@ -89,6 +89,18 @@ class PatientLabelForm(FlaskForm):
     date_of_birth = DateField('Date of Birth', format='%Y-%m-%d')
     gender = QuerySelectField(query_factory=lambda: Gender.query.all(), get_label='name')
     patient_health_number = IntegerField('Patient Health Number')
+
+
+class SampleAccessioningLogForm(FlaskForm):
+    neurocode_id = StringField('Neurocode ID')
+    req_exists = BooleanField('Sample accompanied by a requisition form')
+    container_proper = BooleanField('Sample collected in proper container')
+    sealed = BooleanField('Sample properly sealed, no leaking')
+    labelled = BooleanField('Sample properly labelled at least with name/ patient ID and date of collection')
+    matching_requisition = BooleanField('Sample was delivered with correct, matching requisition')
+    sufficient_quantity = BooleanField('Sufficient volume/quantity/quality of samples')
+
+
 
 
 

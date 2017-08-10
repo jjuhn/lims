@@ -46,6 +46,18 @@
 {% endmacro %}
 
 
+{% macro sample_accessioning_log_form(form) %}
+    {{ render_textfield(form.neurocode_id) }}
+    {{ render_textfield(form.req_exists) }}
+    {{ render_textfield(form.container_proper) }}
+    {{ render_textfield(form.sealed) }}
+    {{ render_textfield(form.labelled) }}
+    {{ render_textfield(form.matching_requisition) }}
+    {{ render_textfield(form.sufficient_quantity) }}
+
+{% endmacro %}
+
+
 {% macro sample_form(form) %}
 {#    {{ render_textfield(form.neurocode_id) }}#}
 {#    {{ render_textfield(form.age) }}#}

@@ -1,0 +1,74 @@
+{% from "macro/forms.html" import sample_accessioning_log_form as sal %}
+
+{% extends "lab/index.html" %}
+{% block lab_content %}
+    <div class="container">
+        <form id="sal_form" class="form-horizontal" method="POST" action="{{ url_for('sample_accessioning_log') }}" autocomplete="off">
+            <legend>Sample Accessioning Log</legend>
+                <div class="form-group">
+                    {{ sal_form.csrf_token }}
+                    {{ sal(sal_form) }}
+                </div>
+
+            <legend>Blood </legend>
+                <div class="form-group">
+                    Number of aliquots
+                    Barcode IDs: [bootstrap-select]
+                    <select id="blood-select" class="selectpicker" multiple>
+
+                    </select>
+
+                </div>
+            <legend>DNA </legend>
+                <div class="form-group">
+                    Number of Aliquots
+                    Barcode IDs:
+
+                </div>
+
+
+
+            <input type="submit" class="btn btn-default" value="Save">
+        </form>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#neurocode_id").autocomplete({
+                source: function(request, response){
+
+                    $.getJSON("/api/subjects?include=gender&filter[neurocode.eq]="+request.term, {
+                        term: request.term
+                    }, function(data){
+                        new_data = jsonapi.parse_response(data, 2);
+                        response($.map(new_data, function(value, key){
+                            return {
+                                label: value.neurocode ,
+                                data: value
+                            }
+                        }))
+                    });
+                },
+                dataType: 'json',
+                minLength: 3,
+                select: function(event, ui){
+                    console.log(ui.item.data)
+{#                    $('#neurocode_id').val(ui.label);#}
+{#                    $('#age').val(ui.item.data.age);#}
+{#                    $('input[name=gender][value='+ui.item.data.gender.id+']').prop('checked', true);#}
+
+
+                }
+            });
+
+
+        });
+
+
+
+
+    </script>
+
+
+{% endblock %}
